@@ -5,17 +5,11 @@ import java.util.Date;
 
 public class DishResponse {
 
-    public int id;
+    private String name;
 
-    public String name;
+    private String description;
 
-    public String description;
+    private boolean isDessert;
 
-    public double price;
-
-    public boolean isDessert;
-
-    public Date createdAt = new Date();
-
-    public Date updatedAt = new Date();
+    private double price;
 }

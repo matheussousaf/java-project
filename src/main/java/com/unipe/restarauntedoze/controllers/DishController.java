@@ -1,40 +1,44 @@
 package com.unipe.restarauntedoze.controllers;
 
-import com.unipe.restarauntedoze.models.requests.TestRequest;
-import com.unipe.restarauntedoze.models.responses.TestResponse;
+import com.unipe.restarauntedoze.business.DishBusiness;
+import com.unipe.restarauntedoze.models.Dish;
+import com.unipe.restarauntedoze.models.requests.DishRequest;
+import com.unipe.restarauntedoze.services.DishService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class DishController {
 
-    @RequestMapping(value = "/dishes", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+    @Autowired
+    public DishService service;
 
-    private TestResponse getDishes() {
-        TestResponse teste = new TestResponse();
-        teste.setMessage("Todos os pratos carregados!");
-        return teste;
+    @RequestMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+    private Dish getSingleDish(@RequestParam Long id) {
+        return service.getSingleDish(id);
     }
 
-    @RequestMapping(value = "/dishes", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
-    private TestResponse createDish(@RequestBody TestRequest request) {
-        TestResponse teste = new TestResponse();
-        teste.setMessage("Prato criado! " + request.getMessage());
-        return teste;
+    @RequestMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+    private List<Dish> getDishes() {
+        return service.getAllDishes();
     }
 
-    @RequestMapping(value = "/dishes/{id}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.PUT)
-    private TestResponse editDish(@PathVariable("id") int id) {
-        TestResponse teste = new TestResponse();
-        teste.setMessage("Prato editado! " + id);
-        return teste;
+    @RequestMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
+    private Dish createDish(@RequestBody Dish request) {
+        return service.createDish(request);
     }
 
-    @RequestMapping(value = "/dishes/{id}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.DELETE)
-    private TestResponse deleteDish(@PathVariable("id") int id) {
-        TestResponse teste = new TestResponse();
-        teste.setMessage("Prato deletado! " + id);
-        return teste;
+    @RequestMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.PUT)
+    private Dish editDish(@PathVariable("id") Long id, @RequestBody DishRequest request) {
+        return service.editDish(id, request);
+    }
+
+    @RequestMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.DELETE)
+    private void deleteDish(@PathVariable("id") Long id) {
+        service.deleteDish(id);
     }
 
 
